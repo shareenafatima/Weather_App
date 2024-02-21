@@ -1,7 +1,7 @@
-// Function to fetch weather data from API
+
 async function fetchWeather(location) {
     const apiKey = '804ffd0b5fcd78e70effd697f9180def'
-    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid=804ffd0b5fcd78e70effd697f9180def`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=london&appid=804ffd0b5fcd78e70effd697f9180def`;
 
     try {
         const response = await fetch(apiUrl);
@@ -16,7 +16,6 @@ async function fetchWeather(location) {
     }
 }
 
-// Function to process weather data and return relevant information
 function processWeatherData(data) {
     const processedData = {
         location: data.name,
@@ -27,7 +26,6 @@ function processWeatherData(data) {
     return processedData;
 }
 
-// Function to handle form submission
 document.getElementById('weatherForm').addEventListener('submit', async function (event) {
     event.preventDefault();
     const locationInput = document.getElementById('locationInput');
@@ -44,7 +42,6 @@ document.getElementById('weatherForm').addEventListener('submit', async function
     }
 });
 
-// Function to display weather information on the webpage
 function displayWeather(weatherData) {
     const weatherInfoDiv = document.getElementById('weatherInfo');
     weatherInfoDiv.innerHTML = `
