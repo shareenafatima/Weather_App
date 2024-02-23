@@ -1,7 +1,7 @@
 
 async function fetchWeather(location) {
     const apiKey = '804ffd0b5fcd78e70effd697f9180def'
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=london&appid=804ffd0b5fcd78e70effd697f9180def`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=804ffd0b5fcd78e70effd697f9180def`;
 
     try {
         const response = await fetch(apiUrl);
@@ -9,21 +9,36 @@ async function fetchWeather(location) {
             throw new Error('Weather data not found');
         }
         const data = await response.json();
+        if (!validCountry(data)){
+            throw new Error('Invalid country name!');
+        }
         return processWeatherData(data);
-    } catch (error) {
-        console.error('Error fetching weather:', error.message);
+    }  
+    catch(error){
+        displayError(error.message);
         return null;
     }
 }
 
+function validCountry(data){
+    return data.sys && data.sys.country;
+
+}
+
 function processWeatherData(data) {
+    const temperatureCelsius = (data.main.temp - 273.15).toFixed(3);
     const processedData = {
         location: data.name,
         country: data.sys.country,
-        temperature: data.main.temp,
+        temperature: temperatureCelsius,
         description: data.weather[0].description
     };
     return processedData;
+}
+
+function displayError(message){
+    const errorDiv = document.getElementById('error');
+    errorDiv.textContent = message;
 }
 
 document.getElementById('weatherForm').addEventListener('submit', async function (event) {
@@ -40,6 +55,7 @@ document.getElementById('weatherForm').addEventListener('submit', async function
     if (weatherData) {
         displayWeather(weatherData);
     }
+    locationInput.value = '';
 });
 
 function displayWeather(weatherData) {
@@ -47,7 +63,7 @@ function displayWeather(weatherData) {
     weatherInfoDiv.innerHTML = `
       <h2>Weather Information</h2>
       <p><strong>Location:</strong> ${weatherData.location}, ${weatherData.country}</p>
-      <p><strong>Temperature:</strong> ${weatherData.temperature} K</p>
+      <p><strong>Temperature:</strong> ${weatherData.temperature} C</p>
       <p><strong>Description:</strong> ${weatherData.description}</p>
     `;
 }
