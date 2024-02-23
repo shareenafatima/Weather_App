@@ -54,9 +54,14 @@ document.getElementById('weatherForm').addEventListener('submit', async function
     const weatherData = await fetchWeather(location);
     if (weatherData) {
         displayWeather(weatherData);
+        clearerror();
     }
     locationInput.value = '';
 });
+function clearerror(){
+    const errorDiv = document.getElementById("error");
+    errorDiv.textContent = '';
+}
 
 function displayWeather(weatherData) {
     const weatherInfoDiv = document.getElementById('weatherInfo');
