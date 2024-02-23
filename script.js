@@ -6,7 +6,7 @@ async function fetchWeather(location) {
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
-            throw new Error('Weather data not found');
+            throw new Error('Weather data not found!');
         }
         const data = await response.json();
         if (!validCountry(data)){
@@ -37,8 +37,14 @@ function processWeatherData(data) {
 }
 
 function displayError(message){
+    clearInfo();
     const errorDiv = document.getElementById('error');
     errorDiv.textContent = message;
+}
+
+function clearInfo(){
+    const clearWeather = document.getElementById('weatherInfo');
+    clearWeather.innerHTML = '';
 }
 
 document.getElementById('weatherForm').addEventListener('submit', async function (event) {
